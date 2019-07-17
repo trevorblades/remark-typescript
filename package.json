@@ -1,0 +1,24 @@
+{
+  "name": "gatsby-remark-typescript",
+  "version": "0.0.0",
+  "description": "Transpiles TypeScript code blocks to JavaScript ones in your markdown",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["typescript", "javascript", "transpilation", "markdown", "plugin"],
+  "author": "Trevor Blades <tdblades@gmail.com>",
+  "repository": "trevorblades/gatsby-remark-typescript",
+  "license": "MIT",
+  "eslintConfig": {
+    "extends": "@trevorblades"
+  },
+  "devDependencies": {
+    "@trevorblades/eslint-config": "^6.22.2",
+    "eslint": "^6.0.1"
+  },
+  "dependencies": {
+    "typescript": "^3.5.3",
+    "unist-util-visit": "^1.4.1"
+  }
+}
