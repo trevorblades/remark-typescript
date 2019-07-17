@@ -1,6 +1,8 @@
 const ts = require('typescript');
 const visit = require('unist-util-visit');
 
+// TODO: convert to typescript
+
 const compilerOptions = {
   target: ts.ScriptTarget.ES2017,
   jsx: ts.JsxEmit.Preserve
