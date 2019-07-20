@@ -14,17 +14,17 @@ function isReactComponent(node, tag) {
 
 module.exports = (
   {markdownAST},
-  {wrapper, prettierOptions = {parser: 'babel'}} = {}
+  {wrapperComponent, prettierOptions = {parser: 'babel'}} = {}
 ) => {
   visit(markdownAST, 'code', (node, index, parent) => {
     if (/tsx?/.test(node.lang)) {
       const prevNode = parent.children[index - 1];
       const nextNode = parent.children[index + 1];
 
-      if (wrapper) {
+      if (wrapperComponent) {
         const isWrapped =
-          isReactComponent(prevNode, `<${wrapper}>`) &&
-          isReactComponent(nextNode, `</${wrapper}>`);
+          isReactComponent(prevNode, `<${wrapperComponent}>`) &&
+          isReactComponent(nextNode, `</${wrapperComponent}>`);
         if (!isWrapped) {
           return;
         }
