@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-typescript",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Transpiles TypeScript code blocks to JavaScript ones in your markdown",
   "main": "index.js",
   "scripts": {
