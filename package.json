@@ -4,8 +4,9 @@
   "description": "Transpiles TypeScript code blocks to JavaScript ones in your markdown",
   "main": "index.js",
   "scripts": {
-    "test": "eslint index.ts",
-    "prepare": "tsc index.ts"
+    "pretest": "eslint src/*",
+    "test": "jest",
+    "prepare": "tsc src/index.ts"
   },
   "keywords": [
     "typescript",
@@ -19,9 +20,15 @@
   "license": "MIT",
   "devDependencies": {
     "@trevorblades/eslint-config": "^6.22.2",
+    "@types/babel-core": "^6.25.6",
+    "@types/jest": "^24.0.15",
+    "@types/prettier": "^1.18.0",
     "@typescript-eslint/eslint-plugin": "^1.13.0",
     "@typescript-eslint/parser": "^1.13.0",
     "eslint": "^6.0.1",
+    "jest": "^24.8.0",
+    "mdast-builder": "^1.1.0",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   },
   "dependencies": {

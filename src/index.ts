@@ -22,10 +22,10 @@ interface Options {
   prettierOptions?: object;
 }
 
-export = (
+export = function visitor(
   {markdownAST},
   {wrapperComponent, prettierOptions = {parser: 'babel'}}: Options = {}
-): object => {
+): object {
   visit(
     markdownAST,
     'code',
