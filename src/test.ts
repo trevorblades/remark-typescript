@@ -2,7 +2,7 @@
 import visitor = require('.');
 import {code, root} from 'mdast-builder';
 
-test('transpiles TS code blocks', (): void => {
+test('transforms TS code blocks', (): void => {
   const ts = code('ts', '(): void => {}');
   const mdast = visitor({markdownAST: root([ts])});
   expect(mdast).toEqual({

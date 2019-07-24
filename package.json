@@ -1,17 +1,18 @@
 {
   "name": "gatsby-remark-typescript",
   "version": "0.0.8",
-  "description": "Transpiles TypeScript code blocks to JavaScript ones in your markdown",
+  "description": "Transforms TypeScript code blocks to JavaScript and inserts them into the page",
   "main": "index.js",
   "scripts": {
     "pretest": "eslint src/*",
     "test": "jest",
-    "prepare": "tsc src/index.ts"
+    "prepare": "tsc"
   },
   "keywords": [
     "typescript",
     "javascript",
-    "transpilation",
+    "transform",
+    "transpile",
     "markdown",
     "plugin"
   ],
