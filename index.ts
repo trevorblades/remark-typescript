@@ -1,5 +1,5 @@
-import prettier from 'prettier';
-import visit from 'unist-util-visit';
+import * as visit from 'unist-util-visit';
+import {format} from 'prettier';
 import {transformSync} from '@babel/core';
 
 function insertAt(array: Node[], index: number, item: Node): Node[] {
@@ -54,7 +54,7 @@ export = (
             parent.children = insertAt(parent.children, index + 1, {
               type: 'code',
               lang: /x$/.test(node.lang) ? 'jsx' : 'js',
-              value: prettier.format(code, prettierOptions).trim()
+              value: format(code, prettierOptions).trim()
             });
           }
         } catch (error) {
