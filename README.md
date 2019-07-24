@@ -109,6 +109,8 @@ import {CodeBlockWrapper} from '../components';
 
 The component that you wrap the code blocks with could include some additional logic, like allowing users to switch between the two resulting code blocks. Check out Apollo's [`MultiCodeBlock` component](https://github.com/apollographql/gatsby-theme-apollo/blob/master/packages/gatsby-theme-apollo-docs/src/components/multi-code-block.js) for an example of how to accomplish this.
 
+![Apollo's MultiCodeBlock](./example.gif)
+
 ## License
 
 [MIT](./LICENSE)
