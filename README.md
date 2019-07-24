@@ -9,6 +9,7 @@ Transforms TypeScript code blocks to JavaScript and inserts them into the page
 - [Options](#options)
   - [`prettierOptions`](#prettieroptions)
   - [`wrapperComponent` (MDX only)](#wrappercomponent-mdx-only)
+- [License](#license)
 
 ## Installation
 
@@ -64,7 +65,7 @@ module.exports = {
 
 ### `wrapperComponent` (MDX only)
 
-A string representing the name of the React component used to wrap code blocks that you wish to transform. This feature allows the author to choose which TypeScript code blocks to transform by wrapping them in some JSX. The component that you wrap the code blocks with could include some additional logic, like allowing users to toggle between the two resulting code blocks.
+A string representing the name of the React component used to wrap code blocks that you wish to transform. This feature allows the author to choose which TypeScript code blocks to transform by wrapping them in some JSX.
 
 ```js
 // gatsby-config.js
@@ -105,3 +106,9 @@ import {CodeBlockWrapper} from '../components';
 // this one will be ignored
 ```
 ````
+
+The component that you wrap the code blocks with could include some additional logic, like allowing users to switch between the two resulting code blocks. Check out Apollo's [`MultiCodeBlock` component](https://github.com/apollographql/gatsby-theme-apollo/blob/master/packages/gatsby-theme-apollo-docs/src/components/multi-code-block.js) for an example of how to accomplish this.
+
+## License
+
+[MIT](./LICENSE)
