@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "eslint index.ts",
-    "prepare": "tsc --module commonjs index.ts"
+    "prepare": "tsc index.ts"
   },
   "keywords": [
     "typescript",
