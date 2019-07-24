@@ -4,7 +4,8 @@
   "description": "Transpiles TypeScript code blocks to JavaScript ones in your markdown",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint index.ts",
+    "prepare": "tsc --module commonjs index.ts"
   },
   "keywords": [
     "typescript",
@@ -16,12 +17,12 @@
   "author": "Trevor Blades <tdblades@gmail.com>",
   "repository": "trevorblades/gatsby-remark-typescript",
   "license": "MIT",
-  "eslintConfig": {
-    "extends": "@trevorblades"
-  },
   "devDependencies": {
     "@trevorblades/eslint-config": "^6.22.2",
-    "eslint": "^6.0.1"
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "@typescript-eslint/parser": "^1.13.0",
+    "eslint": "^6.0.1",
+    "typescript": "^3.5.3"
   },
   "dependencies": {
     "@babel/core": "^7.5.5",

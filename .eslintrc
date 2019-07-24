@@ -1,0 +1,10 @@
+{
+  "extends": [
+    "@trevorblades",
+    "plugin:@typescript-eslint/eslint-plugin/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "@typescript-eslint/indent": "off"
+  }
+}
