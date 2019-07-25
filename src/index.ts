@@ -1,16 +1,15 @@
 import * as visit from 'unist-util-visit';
-import {format} from 'prettier';
+import {Code, Parent} from 'mdast'; // eslint-disable-line import/no-unresolved
+import {Node} from 'unist'; // eslint-disable-line import/no-unresolved
+import {Options as PrettierOptions, format} from 'prettier';
 import {transformSync} from '@babel/core';
 
-function insertAt(array: Node[], index: number, item: Node): Node[] {
+function insertAt(
+  array: Parent['children'],
+  index: number,
+  item: Code
+): Parent['children'] {
   return [...array.slice(0, index), item, ...array.slice(index)];
-}
-
-interface Node {
-  type: string;
-  lang?: string;
-  value?: string;
-  children?: Node[];
 }
 
 function isReactComponent(node: Node, tag: string): boolean {
@@ -19,7 +18,7 @@ function isReactComponent(node: Node, tag: string): boolean {
 
 interface Options {
   wrapperComponent?: string;
-  prettierOptions?: object;
+  prettierOptions?: PrettierOptions;
 }
 
 export = function visitor(
@@ -29,7 +28,7 @@ export = function visitor(
   visit(
     markdownAST,
     'code',
-    (node: Node, index: number, parent: Node): void => {
+    (node: Code, index: number, parent: Parent): void => {
       if (/tsx?/.test(node.lang)) {
         const prevNode = parent.children[index - 1];
         const nextNode = parent.children[index + 1];
