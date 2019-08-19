@@ -28,6 +28,7 @@
     "@types/prettier": "^1.18.0",
     "@types/unist": "^2.0.3",
     "eslint": "^6.0.1",
+    "eslint-import-resolver-typescript": "github:JounQin/eslint-import-resolver-typescript#feat/resolve_dts",
     "jest": "^24.8.0",
     "mdast-builder": "^1.1.0",
     "ts-jest": "^24.0.2",

@@ -1,6 +1,6 @@
 import * as visit from 'unist-util-visit';
-import {Code, Parent} from 'mdast'; // eslint-disable-line import/no-unresolved
-import {Node} from 'unist'; // eslint-disable-line import/no-unresolved
+import {Code, Parent} from 'mdast';
+import {Node} from 'unist';
 import {Options as PrettierOptions, format} from 'prettier';
 import {transformSync} from '@babel/core';
 
