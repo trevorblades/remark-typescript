@@ -1,6 +1,6 @@
 # gatsby-remark-typescript
 
-[![Build Status](https://travis-ci.com/trevorblades/gatsby-remark-typescript.svg?branch=master)](https://travis-ci.com/trevorblades/gatsby-remark-typescript)
+[![Build Status](https://github.com/trevorblades/gatsby-remark-typescript/workflows/Node%20CI/badge.svg)](https://github.com/trevorblades/gatsby-remark-typescript/actions)
 
 Transforms TypeScript code blocks to JavaScript and inserts them into the page
 
