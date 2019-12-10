@@ -26,7 +26,7 @@ export = function plugin(
   {wrapperComponent, prettierOptions = {parser: 'babel'}}: Options = {}
 ): Parent {
   function visitor(node: Code, index: number, parent: Parent): void {
-    if (/tsx?/.test(node.lang)) {
+    if (/^tsx?/.test(node.lang)) {
       const prevNode = parent.children[index - 1];
       const nextNode = parent.children[index + 1];
 
@@ -49,7 +49,7 @@ export = function plugin(
         if (code.trim()) {
           parent.children = insertAt(parent.children, index + 1, {
             type: 'code',
-            lang: /x$/.test(node.lang) ? 'jsx' : 'js',
+            lang: node.lang.replace(/^ts|(?<=\.)ts/g, 'js'),
             value: format(code, prettierOptions).trim()
           });
         }
