@@ -6,9 +6,10 @@ Transforms TypeScript code blocks to JavaScript and inserts them into the page
 
 - [Installation](#installation)
 - [Usage](#usage)
+- [Preserving unused imports](#preserving-unused-imports)
 - [Options](#options)
-  - [`prettierOptions`](#prettieroptions)
-  - [`wrapperComponent` (MDX only)](#wrappercomponent-mdx-only)
+  - [prettierOptions](#prettieroptions)
+  - [wrapperComponent (MDX only)](#wrappercomponent-mdx-only)
 - [License](#license)
 
 ## Installation
@@ -110,6 +111,23 @@ import {CodeBlockWrapper} from '../components';
 Your wrapper component could include some additional logic, like allowing users to switch between the original and transformed code blocks. Check out Apollo's [`MultiCodeBlock` component](https://github.com/apollographql/gatsby-theme-apollo/blob/master/packages/gatsby-theme-apollo-docs/src/components/multi-code-block.js) for an example of how to accomplish this.
 
 ![Example wrapper component](./example.gif)
+
+## Preserving unused imports
+
+This plugin uses [Babel](https://babeljs.io) to do the transpilation, and because of this, you might notice unused imports being removed from your transpiled JavaScript codeblocks. To avoid this behavior, you can use a `// preserve-line` directive on lines that you don't want to be removed from the transpiled version.
+
+````md
+```ts
+import gql from 'graphql-tag';
+import {ApolloClient} from 'apollo-client'; // preserve-line
+
+export const typeDefs = gql`
+  type Query {
+    posts: [Post]
+  }
+`;
+```
+````
 
 ## License
 
