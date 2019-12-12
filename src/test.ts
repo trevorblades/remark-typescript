@@ -24,14 +24,12 @@ test('preserves tagged unused imports', (): void => {
         code(
           'ts',
           outdent`
-            import gql from 'graphql-tag';
-            import {ApolloClient} from 'apollo-client'; // preserve-line
+            import { ApolloServer } from 'apollo-server';
+            import typeDefs from './schema';
+            import preserved from 'preserved'; // preserve-line
+            import notPreserved from 'not-preserved';
 
-            export const typeDefs = gql\`
-              type Query {
-                posts: [Post]
-              }
-            \`;
+            const server = new ApolloServer({ typeDefs });
           `
         )
       ])
@@ -48,27 +46,22 @@ test('preserves tagged unused imports', (): void => {
       code(
         'ts',
         outdent`
-          import gql from 'graphql-tag';
-          import {ApolloClient} from 'apollo-client';
+          import { ApolloServer } from 'apollo-server';
+          import typeDefs from './schema';
+          import preserved from 'preserved';
+          import notPreserved from 'not-preserved';
 
-          export const typeDefs = gql\`
-            type Query {
-              posts: [Post]
-            }
-          \`;
+          const server = new ApolloServer({ typeDefs });
         `
       ),
       code(
         'js',
         outdent`
-          import gql from 'graphql-tag';
-          import { ApolloClient } from 'apollo-client';
+          import { ApolloServer } from 'apollo-server';
+          import typeDefs from './schema';
+          import preserved from 'preserved';
 
-          export const typeDefs = gql\`
-            type Query {
-              posts: [Post]
-            }
-          \`;
+          const server = new ApolloServer({ typeDefs });
         `
       )
     ])
