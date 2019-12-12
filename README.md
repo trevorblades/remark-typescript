@@ -6,10 +6,10 @@ Transforms TypeScript code blocks to JavaScript and inserts them into the page
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Preserving unused imports](#preserving-unused-imports)
 - [Options](#options)
   - [prettierOptions](#prettieroptions)
   - [wrapperComponent (MDX only)](#wrappercomponent-mdx-only)
+- [Preserving unused imports](#preserving-unused-imports)
 - [License](#license)
 
 ## Installation
