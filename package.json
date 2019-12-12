@@ -1,6 +1,6 @@
 {
   "name": "gatsby-remark-typescript",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Transforms TypeScript code blocks to JavaScript and inserts them into the page",
   "main": "index.js",
   "scripts": {
