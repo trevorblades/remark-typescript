@@ -116,7 +116,7 @@ Your wrapper component could include some additional logic, like allowing users 
 
 This plugin uses [Babel](https://babeljs.io) to do the transpilation, and because of this, you might notice unused imports being removed from your transpiled JavaScript codeblocks. To avoid this behavior, you can use a `// preserve-line` directive on lines that you don't want to be removed from the transpiled version.
 
-````md
+````markdown
 ```ts
 import gql from 'graphql-tag';
 import {ApolloClient} from 'apollo-client'; // preserve-line
