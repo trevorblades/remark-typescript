@@ -1,7 +1,7 @@
 {
-  "name": "gatsby-remark-typescript",
-  "version": "0.2.2",
-  "description": "Transforms TypeScript code blocks to JavaScript and inserts them into the page",
+  "name": "remark-typescript",
+  "version": "0.3.0",
+  "description": "Transforms TypeScript code blocks to JavaScript and inserts them back into the page",
   "main": "index.js",
   "scripts": {
     "pretest": "eslint src/*",
@@ -14,24 +14,25 @@
     "transform",
     "transpile",
     "markdown",
-    "gatsby",
-    "gatsby-plugin"
+    "remark",
+    "remark-plugin"
   ],
   "author": "Trevor Blades <tdblades@gmail.com>",
-  "repository": "trevorblades/gatsby-remark-typescript",
+  "repository": "trevorblades/remark-typescript",
   "license": "MIT",
   "devDependencies": {
     "@trevorblades/eslint-config": "^7.0.0",
     "@types/babel-core": "^6.25.6",
     "@types/jest": "^24.0.15",
     "@types/mdast": "^3.0.2",
+    "@types/node": "^13.1.4",
     "@types/prettier": "^1.18.0",
     "@types/unist": "^2.0.3",
     "eslint": "^6.0.1",
     "eslint-import-resolver-ts": "^0.3.0",
     "jest": "^24.8.0",
-    "mdast-builder": "^1.1.0",
     "outdent": "^0.7.0",
+    "remark": "^11.0.2",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.3"
   },
