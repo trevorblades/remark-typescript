@@ -1,8 +1,8 @@
-# gatsby-remark-typescript
+# remark-typescript
 
-[![Build Status](https://github.com/trevorblades/gatsby-remark-typescript/workflows/Node%20CI/badge.svg)](https://github.com/trevorblades/gatsby-remark-typescript/actions)
+[![Build Status](https://github.com/trevorblades/remark-typescript/workflows/Node%20CI/badge.svg)](https://github.com/trevorblades/remark-typescript/actions)
 
-Transforms TypeScript code blocks to JavaScript and inserts them into the page
+A [remark](https://github.com/remarkjs/remark) plugin to transpile TypeScript code blocks.
 
 - [Installation](#installation)
 - [Usage](#usage)
@@ -15,30 +15,21 @@ Transforms TypeScript code blocks to JavaScript and inserts them into the page
 ## Installation
 
 ```bash
-npm install gatsby-remark-typescript
+npm install remark-typescript
 ```
 
 ## Usage
 
 ```js
-// gatsby-config.js
-module.exports = {
-  plugins: [
-    {
-      resolve: 'gatsby-transformer-remark',
-      plugins: ['gatsby-remark-typescript']
-    }
-  ]
-};
+import remark from 'remark';
+import typescript from 'remark-typescript';
+
+remark()
+  .use(typescript)
+  .process(...);
 ```
 
-## Options
-
-By default, `gatsby-remark-typescript` will visit *all* TypeScript code blocks in your site and insert the transformed and formatted JavaScript after each of them. You can affect this default behaviour and formatting settings using options supplied to this plugin.
-
-### `prettierOptions`
-
-An object of options supplied to `prettier.format` when formatting the JS output. See [Prettier's docs](https://prettier.io/docs/en/options) for more information.
+### Gatsby example
 
 ```js
 // gatsby-config.js
@@ -47,26 +38,52 @@ module.exports = {
     {
       resolve: 'gatsby-transformer-remark',
       options: {
-        plugins: [
-          {
-            resolve: 'gatsby-remark-typescript',
-            options: {
-              prettierOptions: {
-                semi: false,
-                singleQuote: false
-              }
-            }
-          }
-        ]
+        plugins: ['remark-typescript']
+      }
+    },
+    // for MDX users...
+    {
+      resolve: 'gatsby-plugin-mdx',
+      options: {
+        remarkPlugins: ['remark-typescript']
       }
     }
   ]
-};
+}
 ```
 
-### `wrapperComponent` (MDX only)
+## API
 
-A string representing the name of the React component used to wrap code blocks that you wish to transform. This feature allows the author to choose which TypeScript code blocks to transform by wrapping them in some JSX.
+### `remark().use(typescript[, options])`
+
+Transform TypeScript code blocks to JavaScript and inserts them back into the page. Use `options` to affect the formatting or control which code blocks get transpiled.
+
+#### `options.prettierOptions`
+
+An object of options supplied to `prettier.format` when formatting the JS output. See [Prettier's docs](https://prettier.io/docs/en/options) for more information.
+
+```js
+import remark from 'remark';
+import typescript from 'remark-typescript';
+
+remark()
+  .use(
+    typescript,
+    {
+      prettierOptions: {
+        semi: false,
+        singleQuote: false
+      }
+    }
+  )
+  .process(...);
+```
+
+#### `options.wrapperComponent` (MDX only)
+
+A string representing the name of the React component used to wrap code blocks that you wish to transform.
+
+By default, `remark-typescript` will visit *all* TypeScript code blocks in your site and insert the transformed and formatted JavaScript after each of them. This feature allows the author to choose which TypeScript code blocks to transform by wrapping them in some JSX.
 
 ```js
 // gatsby-config.js
@@ -75,14 +92,14 @@ module.exports = {
     {
       resolve: 'gatsby-plugin-mdx',
       options: {
-        gatsbyRemarkPlugins: [
-          {
-            resolve: 'gatsby-remark-typescript',
-            options: {
+        remarkPlugins: [
+          [
+            'remark-typescript',
+            {
               // configure the JSX component that the plugin should check for
               wrapperComponent: 'CodeBlockWrapper'
             }
-          }
+          ]
         ]
       }
     }
