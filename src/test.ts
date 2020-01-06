@@ -1,69 +1,93 @@
 /* eslint-env jest */
-import plugin = require('.');
-import {code, root} from 'mdast-builder';
+import remarkTypescript = require('.');
+import remark = require('remark');
 import {outdent} from 'outdent';
 
 test('transforms TS code blocks', (): void => {
-  const ts = code('ts', '(): void => {}');
-  const mdast = plugin({markdownAST: root([ts])});
-  expect(mdast).toEqual(root([ts, code('js', '() => {};')]));
+  const ts = outdent`
+    \`\`\`ts
+    (): void => { }
+    \`\`\`
+  `;
+  expect(
+    remark()
+      .use(remarkTypescript)
+      .processSync(ts)
+      .toString()
+  ).toEqual(
+    outdent`
+      ${ts}
+
+      \`\`\`js
+      () => {};
+      \`\`\`
+      
+    `
+  );
 });
 
 test('preserves code block titles', (): void => {
-  const ts = code('tsx:title=src/index.tsx', '(): void => {}');
-  const mdast = plugin({markdownAST: root([ts])});
-  expect(mdast).toEqual(
-    root([ts, code('jsx:title=src/index.jsx', '() => {};')])
+  const ts = outdent`
+    \`\`\`tsx:title=src/index.tsx
+    (): void => { }
+    \`\`\`
+  `;
+  expect(
+    remark()
+      .use(remarkTypescript)
+      .processSync(ts)
+      .toString()
+  ).toEqual(
+    outdent`
+      ${ts}
+
+      \`\`\`jsx:title=src/index.jsx
+      () => {};
+      \`\`\`
+      
+    `
   );
 });
 
 test('preserves tagged unused imports', (): void => {
-  const mdast = plugin(
-    {
-      markdownAST: root([
-        code(
-          'ts',
-          outdent`
-            import { ApolloServer } from 'apollo-server';
-            import typeDefs from './schema';
-            import preserved from 'preserved'; // preserve-line
-            import notPreserved from 'not-preserved';
+  const ts = outdent`
+    \`\`\`ts
+    import { ApolloServer } from 'apollo-server';
+    import typeDefs from './schema';
+    import preserved from 'preserved'; // preserve-line
+    import notPreserved from 'not-preserved';
 
-            const server = new ApolloServer({ typeDefs });
-          `
-        )
-      ])
-    },
-    {
-      prettierOptions: {
-        singleQuote: true
-      }
-    }
-  );
+    const server = new ApolloServer({ typeDefs });
+    \`\`\`
+  `;
+  expect(
+    remark()
+      .use(remarkTypescript, {
+        prettierOptions: {
+          singleQuote: true
+        }
+      })
+      .processSync(ts)
+      .toString()
+  ).toEqual(
+    outdent`
+      \`\`\`ts
+      import { ApolloServer } from 'apollo-server';
+      import typeDefs from './schema';
+      import preserved from 'preserved';
+      import notPreserved from 'not-preserved';
 
-  expect(mdast).toEqual(
-    root([
-      code(
-        'ts',
-        outdent`
-          import { ApolloServer } from 'apollo-server';
-          import typeDefs from './schema';
-          import preserved from 'preserved';
-          import notPreserved from 'not-preserved';
+      const server = new ApolloServer({ typeDefs });
+      \`\`\`
 
-          const server = new ApolloServer({ typeDefs });
-        `
-      ),
-      code(
-        'js',
-        outdent`
-          import { ApolloServer } from 'apollo-server';
-          import typeDefs from './schema';
-          import preserved from 'preserved';
+      \`\`\`js
+      import { ApolloServer } from 'apollo-server';
+      import typeDefs from './schema';
+      import preserved from 'preserved';
 
-          const server = new ApolloServer({ typeDefs });
-        `
-      )
-    ])
+      const server = new ApolloServer({ typeDefs });
+      \`\`\`
+      
+    `
   );
 });
