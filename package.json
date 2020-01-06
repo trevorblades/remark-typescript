@@ -13,7 +13,9 @@
     "javascript",
     "transform",
     "transpile",
-    "markdown"
+    "markdown",
+    "remark",
+    "remark-plugin"
   ],
   "author": "Trevor Blades <tdblades@gmail.com>",
   "repository": "trevorblades/remark-typescript",

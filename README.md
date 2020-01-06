@@ -22,10 +22,10 @@ npm install remark-typescript
 
 ```js
 import remark from 'remark';
-import typescript from 'remark-typescript';
+import remarkTypescript from 'remark-typescript';
 
 remark()
-  .use(typescript)
+  .use(remarkTypescript)
   .process(...);
 ```
 
@@ -33,19 +33,14 @@ remark()
 
 ```js
 // gatsby-config.js
+const remarkTypescript = require('remark-typescript');
+
 module.exports = {
   plugins: [
     {
-      resolve: 'gatsby-transformer-remark',
-      options: {
-        plugins: ['remark-typescript']
-      }
-    },
-    // for MDX users...
-    {
       resolve: 'gatsby-plugin-mdx',
       options: {
-        remarkPlugins: ['remark-typescript']
+        remarkPlugins: [remarkTypescript]
       }
     }
   ]
@@ -87,6 +82,8 @@ By default, `remark-typescript` will visit *all* TypeScript code blocks in your 
 
 ```js
 // gatsby-config.js
+const remarkTypescript = require('remark-typescript');
+
 module.exports = {
   plugins: [
     {
@@ -94,7 +91,7 @@ module.exports = {
       options: {
         remarkPlugins: [
           [
-            'remark-typescript',
+            remarkTypescript,
             {
               // configure the JSX component that the plugin should check for
               wrapperComponent: 'CodeBlockWrapper'
