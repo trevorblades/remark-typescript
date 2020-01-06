@@ -1,6 +1,6 @@
 {
   "name": "remark-typescript",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Transforms TypeScript code blocks to JavaScript and inserts them back into the page",
   "main": "index.js",
   "scripts": {
