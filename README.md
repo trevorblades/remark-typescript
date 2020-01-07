@@ -6,9 +6,9 @@ A [remark](https://github.com/remarkjs/remark) plugin to transpile TypeScript co
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Options](#options)
-  - [prettierOptions](#prettieroptions)
-  - [wrapperComponent (MDX only)](#wrappercomponent-mdx-only)
+  - [Gatsby example](#gatsby-example)
+- [API](#api)
+  - [remark().use(remarkTypescript[, options])](#remarkuseremarktypescript-options)
 - [Preserving unused imports](#preserving-unused-imports)
 - [License](#license)
 
@@ -49,7 +49,7 @@ module.exports = {
 
 ## API
 
-### `remark().use(typescript[, options])`
+### `remark().use(remarkTypescript[, options])`
 
 Transform TypeScript code blocks to JavaScript and inserts them back into the page. Use `options` to affect the formatting or control which code blocks get transpiled.
 
