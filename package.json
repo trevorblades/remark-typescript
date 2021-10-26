@@ -21,7 +21,7 @@
   "repository": "trevorblades/remark-typescript",
   "license": "MIT",
   "devDependencies": {
-    "@trevorblades/eslint-config": "^7.0.0",
+    "@trevorblades/eslint-config": "^7.2.5",
     "@types/babel-core": "^6.25.6",
     "@types/jest": "^24.0.15",
     "@types/mdast": "^3.0.2",

@@ -26,11 +26,13 @@ function removePreserveComment(line: string): string {
 
 interface Options {
   wrapperComponent?: string;
+  throwOnError?: boolean;
   prettierOptions?: PrettierOptions;
 }
 
 export = function remarkTypescript({
   wrapperComponent,
+  throwOnError,
   prettierOptions = {}
 }: Options = {}): Transformer {
   return function transformer(tree): void {
@@ -86,7 +88,11 @@ export = function remarkTypescript({
 
           node.value = lines.map(removePreserveComment).join('\n');
         } catch (error) {
-          console.error(error.message);
+          if (throwOnError) {
+            throw error;
+          } else {
+            console.error(error.message);
+          }
         }
       }
     }

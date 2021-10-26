@@ -126,6 +126,10 @@ Your wrapper component could include some additional logic, like allowing users 
 
 ![Example wrapper component](./example.gif)
 
+#### `options.throwOnError`
+
+Set `throwOnError` to `true` to throw when the transpilation step results in an error. By default, errors will be logged to the console and will not cause your build to fail.
+
 ## Preserving unused imports
 
 This plugin uses [Babel](https://babeljs.io) to do the transpilation, and because of this, you might notice unused imports being removed from your transpiled JavaScript codeblocks. To avoid this behavior, you can use a `// preserve-line` directive on lines that you don't want to be removed from the transpiled version.
