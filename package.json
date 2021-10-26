@@ -6,7 +6,7 @@
   "scripts": {
     "pretest": "eslint src/*",
     "test": "jest",
-    "prepare": "tsc"
+    "prepublishOnly": "tsc"
   },
   "keywords": [
     "typescript",
