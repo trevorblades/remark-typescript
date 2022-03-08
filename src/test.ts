@@ -21,7 +21,7 @@ test('transforms TS code blocks', (): void => {
       \`\`\`js
       () => {};
       \`\`\`
-      
+
     `
   );
 });
@@ -44,7 +44,30 @@ test('preserves code block titles', (): void => {
       \`\`\`jsx:title=src/index.jsx
       () => {};
       \`\`\`
-      
+
+    `
+  );
+});
+
+test('preserves metastring', (): void => {
+  const ts = outdent`
+    \`\`\`tsx title="src/index.tsx"
+    (): void => { }
+    \`\`\`
+  `;
+  expect(
+    remark()
+      .use(remarkTypescript)
+      .processSync(ts)
+      .toString()
+  ).toEqual(
+    outdent`
+      ${ts}
+
+      \`\`\`jsx title="src/index.jsx"
+      () => {};
+      \`\`\`
+
     `
   );
 });
@@ -87,7 +110,7 @@ test('preserves tagged unused imports', (): void => {
 
       const server = new ApolloServer({ typeDefs });
       \`\`\`
-      
+
     `
   );
 });

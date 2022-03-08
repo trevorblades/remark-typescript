@@ -69,6 +69,7 @@ export = function remarkTypescript({
             parent.children = insertAt(parent.children, index + 1, {
               type: 'code',
               lang: node.lang.replace(/^ts|(?<=\.)ts/g, 'js'),
+              meta: node.meta?.replace(/\.ts/, '.js'),
               value: format(
                 code
                   .split('\n')
