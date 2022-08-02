@@ -4,7 +4,8 @@
       "dom",
       "es2015"
     ],
-    "outDir": "./"
+    "outDir": "./",
+    "strict": true
   },
   "files": [
     "src/index.ts"
