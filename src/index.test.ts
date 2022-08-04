@@ -1,6 +1,7 @@
 /* eslint-env jest */
-import remarkTypescript = require('.');
-import remark = require('remark');
+import remark from 'remark';
+import remarkTypescript from './index';
+import {Code} from 'mdast';
 import {outdent} from 'outdent';
 
 test('transforms TS code blocks', (): void => {
@@ -83,6 +84,7 @@ test('preserves tagged unused imports', (): void => {
     const server = new ApolloServer({ typeDefs });
     \`\`\`
   `;
+
   expect(
     remark()
       .use(remarkTypescript, {
@@ -109,6 +111,48 @@ test('preserves tagged unused imports', (): void => {
       import preserved from 'preserved';
 
       const server = new ApolloServer({ typeDefs });
+      \`\`\`
+
+    `
+  );
+});
+
+test('tests the skipping parameter', (): void => {
+  const ts = outdent`
+    \`\`\`ts
+    (): void => { }
+    \`\`\`
+
+    \`\`\`ts no-transpile
+    (): void => { }
+    \`\`\`
+
+    \`\`\`ts
+    (): void => { }
+    \`\`\`
+  `;
+  const result = remark()
+    .use(remarkTypescript, {
+      shouldSkip(_, parent, index, meta) {
+        if (meta?.includes('no-transpile')) {
+          return true;
+        }
+        const nextNode = parent.children[index + 1] as Code | undefined;
+        if (nextNode && nextNode.lang === 'ts') {
+          return true;
+        }
+        return false;
+      }
+    })
+    .processSync(ts)
+    .toString();
+
+  expect(result).toEqual(
+    outdent`
+      ${ts}
+
+      \`\`\`js
+      () => {};
       \`\`\`
 
     `
