@@ -1,4 +1,6 @@
 /* eslint-env jest */
+import fenceparser from 'fenceparser';
+import rangeParser from 'parse-numeric-range';
 import remark from 'remark';
 import remarkTypescript from './index';
 import {Code} from 'mdast';
@@ -117,7 +119,7 @@ test('preserves tagged unused imports', (): void => {
   );
 });
 
-test('tests the skipping parameter', (): void => {
+test('uses the skipping parameter', (): void => {
   const ts = outdent`
     \`\`\`ts
     (): void => { }
@@ -153,6 +155,56 @@ test('tests the skipping parameter', (): void => {
 
       \`\`\`js
       () => {};
+      \`\`\`
+
+    `
+  );
+});
+
+test('custom transfomration utilization', (): void => {
+  const ts = outdent`
+    \`\`\`ts {2}
+    type Result = void;
+    (): Result => { }
+    \`\`\`
+  `;
+  const result = remark()
+    .use(remarkTypescript, {
+      customTransformations: [
+        () => {
+          return {
+            afterTranspile(code, meta) {
+              const {highlight} = fenceparser(meta ?? '') ?? {};
+              const highlightedLines: number[] = [];
+              if (highlight) {
+                highlightedLines.push(
+                  ...rangeParser(Object.keys(highlight).toString())
+                );
+              }
+              return code
+                .split('\n')
+                .map((line, index) => {
+                  const isHighlighted = highlightedLines.includes(index + 1);
+                  if (!isHighlighted) {
+                    return line;
+                  }
+                  return line + ' // highlight-line';
+                })
+                .join('\n');
+            }
+          };
+        }
+      ]
+    })
+    .processSync(ts)
+    .toString();
+
+  expect(result).toEqual(
+    outdent`
+      ${ts}
+
+      \`\`\`js {2}
+      () => {}; // highlight-line
       \`\`\`
 
     `
