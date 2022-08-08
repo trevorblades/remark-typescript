@@ -4,7 +4,13 @@
       "dom",
       "es2015"
     ],
-    "outDir": "./"
+    "module": "esnext",
+    "target": "es2015",
+    "outDir": "./",
+    "strict": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node"
   },
   "files": [
     "src/index.ts"

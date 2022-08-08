@@ -22,7 +22,7 @@ npm install remark-typescript
 
 ```js
 import remark from 'remark';
-import remarkTypescript from 'remark-typescript';
+import {remarkTypescript} from 'remark-typescript';
 
 remark()
   .use(remarkTypescript)
@@ -33,7 +33,7 @@ remark()
 
 ```js
 // gatsby-config.js
-const remarkTypescript = require('remark-typescript');
+const {remarkTypescript} = require('remark-typescript');
 
 module.exports = {
   plugins: [
@@ -74,15 +74,47 @@ remark()
   .process(...);
 ```
 
-#### `options.wrapperComponent` (MDX only)
+#### `options.customTransformations`
 
-A string representing the name of the React component used to wrap code blocks that you wish to transform.
+Custom transformations allow code and node manipulation to occur during the transpilation process. There are four code hook locations `beforeTranspile`, `afterTranspile`, `beforeFormat` and `afterFormat`. As well as one node manipulation callback that occurs after all text manipulation is complete.
 
-By default, `remark-typescript` will visit *all* TypeScript code blocks in your site and insert the transformed and formatted JavaScript after each of them. This feature allows the author to choose which TypeScript code blocks to transform by wrapping them in some JSX.
+##### Transformer Structure
+
+Custom transformations take the following shape, note that every single property listed below is optional.
+
+```ts
+{
+  code: {
+    beforeTranspile: () => "",
+    afterTranspile: () => "",
+    beforeFormat: () => "",
+    afterFormat: () => "",
+  },
+  node: () => {},
+}
+```
+
+##### Code Transformer Signature
+
+The code transformer functions all have the same signature, `(code: string, meta?: string) => string`. Code represents the source code at that point, and meta describes the meta string attached to the code block. Note, the meta string is optional. The decision to pass meta as a string as opposed to the node is that the intent is that nodes are immutable until the final node transformer. The returned string is then applied to the forward processes. 
+
+##### Node Transformer Signature
+
+The node transformer as the signature `(originalCodeNode, transpiledCodeNode): void` where all mutations of the nodes happens in place on the object, so no return type is required. Full access to all properties is available here, and certain tasks can be done like cleaning up meta tags.
+
+#### `options.shouldSkip`
+
+THe should skip callback allows for fine-tuned selection of TypeScript blocks. By default, `remark-typescript` will visit *all* TypeScript code blocks in your site and insert the transformed and formatted JavaScript after each of them. This feature allows the author to choose which TypeScript code blocks to transform by returning `true` or `false`.
+
+To keep migration easy, a helper function is included to return the `wrapperComponent` functionality.
+
+##### `isWrapped(options: {wrapperComponent: string})` MDX only
+
+The `isWrapped` helper allows for easy filtering for code blocks only in a certain component. The option `wrapperComponent` is a string representing the name of the React component used to wrap code blocks that you wish to transform.
 
 ```js
 // gatsby-config.js
-const remarkTypescript = require('remark-typescript');
+const {remarkTypescript} = require('remark-typescript');
 
 module.exports = {
   plugins: [
