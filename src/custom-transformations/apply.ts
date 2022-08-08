@@ -1,55 +1,76 @@
+import {Code} from 'mdast';
 import {
+  CodeTransformationLocation,
   CodeTransformer,
-  TransformationLocation,
+  NodeTransformer,
   Transformations
 } from './definition';
+import {iterateArrayOrVal} from '../util/iter';
 
 /**
  * Creates an applicator function that can transform code at each step in the transpilation process
- * @param transformations Custom transformtion array
+ * @param transformations Custom transformation array
  * @returns Transformation function
  */
 export function createTransformationApplicator(
   transformations: Transformations
-): (
-  location: TransformationLocation[] | TransformationLocation,
-  code: string,
-  meta?: string
-) => string {
-  // Store transformations at each locaation
-  const transformationsByLocation: Record<string, Array<CodeTransformer>> = {};
+): {
+  applyAtLocation(
+    location: CodeTransformationLocation[] | CodeTransformationLocation,
+    code: string,
+    meta: string | undefined
+  ): string;
+  applyNodeTransformations(
+    originalCodeNode: Code,
+    transpiledCodeNode: Code | undefined
+  ): void;
+} {
+  // Store transformations at each location
+  const codeTransformationsByLocation: Record<
+    string,
+    Array<CodeTransformer>
+  > = {};
+  const nodeTransformations: Array<NodeTransformer> = [];
 
   for (const transformationFn of transformations) {
-    const transformation = transformationFn();
-    const locations = Object.keys(transformation) as TransformationLocation[];
-    for (const location of locations) {
-      const transformer = transformation[location];
-      if (transformer) {
-        if (transformationsByLocation[location] === undefined) {
-          transformationsByLocation[location] = [];
+    const {code: codeTransformers, node: nodeTransformer} = transformationFn();
+    if (codeTransformers) {
+      const locations = Object.keys(
+        codeTransformers
+      ) as CodeTransformationLocation[];
+      for (const location of locations) {
+        const transformer = codeTransformers[location];
+        if (!transformer) {
+          continue;
         }
-        transformationsByLocation[location].push(transformer);
+        if (codeTransformationsByLocation[location] === undefined) {
+          codeTransformationsByLocation[location] = [];
+        }
+        codeTransformationsByLocation[location].push(transformer);
       }
+    }
+    if (nodeTransformer) {
+      nodeTransformations.push(nodeTransformer);
     }
   }
 
   // Create the applicator function
-  return (locationValOrArray, code, meta) => {
-    // Resolve the location value or array into an array
-    let locations: TransformationLocation[];
-    if (Array.isArray(locationValOrArray)) {
-      locations = locationValOrArray;
-    } else {
-      locations = [locationValOrArray];
-    }
-
-    // Iterate the transformers for each location
-    let modifiedCode = code;
-    for (const location of locations) {
-      for (const transformer of transformationsByLocation[location] ?? []) {
-        modifiedCode = transformer(modifiedCode, meta);
+  return {
+    applyAtLocation(locationValOrArray, code, meta) {
+      // Iterate the transformers for each location
+      let modifiedCode = code;
+      for (const location of iterateArrayOrVal(locationValOrArray)) {
+        for (const transformer of codeTransformationsByLocation[location] ??
+          []) {
+          modifiedCode = transformer(modifiedCode, meta);
+        }
+      }
+      return modifiedCode;
+    },
+    applyNodeTransformations(originalCodeNode, transpiledCodeNode) {
+      for (const nodeTransformation of nodeTransformations) {
+        nodeTransformation(originalCodeNode, transpiledCodeNode);
       }
     }
-    return modifiedCode;
   };
 }
