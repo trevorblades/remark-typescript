@@ -10,7 +10,7 @@ import {
 import {Transformer} from 'unified';
 import {transformSync} from '@babel/core';
 
-export type SkipTest = (
+export type FilterTest = (
   node: Code,
   parent: Parent,
   index: number,
@@ -27,14 +27,14 @@ interface Options {
    */
   prettierOptions?: PrettierOptions;
   /**
-   * Transform the code during differnet stages
+   * Transform the code during different stages
    */
   customTransformations?: Transformations;
   /**
    * Determine if a particular ts/tsx code block should be skipped.
    * @example In MDX, you could check for a particular wrapping component
    */
-  shouldSkip?: SkipTest;
+  filter?: FilterTest;
 }
 
 /**
@@ -46,7 +46,7 @@ export function remarkTypescript({
   throwOnError,
   prettierOptions = {},
   customTransformations = [],
-  shouldSkip
+  filter
 }: Options = {}): Transformer {
   // Push the default pattern preservation transformer
   customTransformations.push(
@@ -67,7 +67,7 @@ export function remarkTypescript({
         const {meta} = node;
 
         // Utilize the should skip method if it exists
-        if (shouldSkip && shouldSkip(node, parent, index, meta)) {
+        if (filter && !filter(node, parent, index, meta)) {
           return;
         }
 

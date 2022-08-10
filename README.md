@@ -114,7 +114,7 @@ The `isWrapped` helper allows for easy filtering for code blocks only in a certa
 
 ```js
 // gatsby-config.js
-const {remarkTypescript} = require('remark-typescript');
+const {remarkTypescript, isWrapped} = require('remark-typescript');
 
 module.exports = {
   plugins: [
@@ -126,7 +126,7 @@ module.exports = {
             remarkTypescript,
             {
               // configure the JSX component that the plugin should check for
-              wrapperComponent: 'CodeBlockWrapper'
+              filter: isWrapped('CodeBlockWrapper')
             }
           ]
         ]

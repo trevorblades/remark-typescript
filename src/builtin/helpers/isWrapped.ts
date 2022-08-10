@@ -1,4 +1,4 @@
-import {SkipTest} from '../../remarkTypescript';
+import {FilterTest} from '../../remarkTypescript';
 
 interface Options {
   /**
@@ -16,7 +16,7 @@ interface JSXNode {
 /**
  * Determines if a code blocked is wrapped in a particular react component. Useful for MDX
  */
-export const isWrapped: (options: Options) => SkipTest = ({
+export const isWrapped: (options: Options) => FilterTest = ({
   wrapperComponent
 }: Options) => (_, parent, index) => {
   const prevNode = parent.children[index - 1];
