@@ -102,9 +102,9 @@ The code transformer functions all have the same signature, `(code: string, meta
 
 The node transformer as the signature `(originalCodeNode, transpiledCodeNode): void` where all mutations of the nodes happens in place on the object, so no return type is required. Full access to all properties is available here, and certain tasks can be done like cleaning up meta tags.
 
-#### `options.shouldSkip`
+#### `options.filter`
 
-THe should skip callback allows for fine-tuned selection of TypeScript blocks. By default, `remark-typescript` will visit *all* TypeScript code blocks in your site and insert the transformed and formatted JavaScript after each of them. This feature allows the author to choose which TypeScript code blocks to transform by returning `true` or `false`.
+The `filter` callback allows for fine-tuned selection of TypeScript blocks. By default, `remark-typescript` will visit *all* TypeScript code blocks in your site and insert the transformed and formatted JavaScript after each of them. This feature allows the author to choose which TypeScript code blocks to transform by returning `true` or `false`.
 
 To keep migration easy, a helper function is included to return the `wrapperComponent` functionality.
 

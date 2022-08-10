@@ -133,15 +133,15 @@ test('uses the skipping parameter', (): void => {
   `;
   const result = remark()
     .use(remarkTypescript, {
-      shouldSkip(_, parent, index, meta) {
+      filter(_, parent, index, meta) {
         if (meta?.includes('no-transpile')) {
-          return true;
+          return false;
         }
         const nextNode = parent.children[index + 1] as Code | undefined;
         if (nextNode && nextNode.lang === 'ts') {
-          return true;
+          return false;
         }
-        return false;
+        return true;
       }
     })
     .processSync(ts)
