@@ -126,7 +126,7 @@ module.exports = {
             remarkTypescript,
             {
               // configure the JSX component that the plugin should check for
-              filter: isWrapped('CodeBlockWrapper')
+              filter: isWrapped({wrapperComponent: 'CodeBlockWrapper'})
             }
           ]
         ]
