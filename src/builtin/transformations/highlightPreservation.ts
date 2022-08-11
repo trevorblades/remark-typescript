@@ -58,7 +58,7 @@ export function highlightPreservation(): () => Transformation {
       ])) {
         // Remove highlight tokens based on fenceparser lexer
         // https://github.com/frencojobs/fenceparser/blob/main/src/Lexer.ts
-        const highlightPattern = /\s*\{[0-9.-]*[0-9]\}\s*/g;
+        const highlightPattern = /\s*\{[0-9.,-]*[0-9]\}/g;
         node.meta = node.meta?.replace(highlightPattern, '');
       }
     }

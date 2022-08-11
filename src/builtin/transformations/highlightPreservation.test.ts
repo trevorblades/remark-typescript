@@ -6,7 +6,8 @@ import {remarkTypescript} from '../../remarkTypescript';
 describe('Highlight Transformation', () => {
   test('keeps simple highlighting', (): void => {
     const ts = outdent`
-      \`\`\`ts {1}
+      \`\`\`ts {1,2}
+      () => {};
       () => {};
       \`\`\`
     `;
@@ -21,9 +22,11 @@ describe('Highlight Transformation', () => {
       outdent`
         \`\`\`ts
         () => {}; // highlight-line
+        () => {}; // highlight-line
         \`\`\`
   
         \`\`\`js
+        () => {}; // highlight-line
         () => {}; // highlight-line
         \`\`\`
 
