@@ -89,4 +89,44 @@ describe('Highlight Transformation', () => {
       `
     );
   });
+  test('disposes of extra empty lines remaining from missing TS highlights', () => {
+    const ts = outdent`
+      \`\`\`ts {3-5}
+      const foo = "bar";
+
+      interface Foo {
+        foo: string;
+      }
+
+      (): void => {};
+      \`\`\`
+    `;
+    const result = remark()
+      .use(remarkTypescript, {
+        customTransformations: [highlightPreservation()]
+      })
+      .processSync(ts)
+      .toString();
+
+    expect(result).toEqual(
+      outdent`
+        \`\`\`ts
+        const foo = "bar";
+
+        interface Foo { // highlight-line
+          foo: string; // highlight-line
+        } // highlight-line
+  
+        (): void => {};
+        \`\`\`
+
+        \`\`\`js
+        const foo = "bar";
+
+        () => {};
+        \`\`\`
+
+      `
+    );
+  });
 });

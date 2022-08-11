@@ -119,6 +119,15 @@ export function remarkTypescript({
           );
 
           applyNodeTransformations(node, transpiledCodeNode);
+
+          // For transpiled code, sometimes extra spaces might occur because of line removal
+          // This will collapse newlines above 2 down to 1
+          if (transpiledCodeNode) {
+            transpiledCodeNode.value = transpiledCodeNode.value.replace(
+              /(?<=\n)\n{2,}/gm,
+              '\n'
+            );
+          }
         } catch (error) {
           if (throwOnError) {
             throw error;
