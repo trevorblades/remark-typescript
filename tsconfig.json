@@ -4,9 +4,9 @@
       "dom",
       "es2015"
     ],
-    "module": "esnext",
+    "module": "CommonJS",
     "target": "es2015",
-    "outDir": "./",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
@@ -14,5 +14,5 @@
   },
   "files": [
     "src/index.ts"
-  ]
+  ],
 }
