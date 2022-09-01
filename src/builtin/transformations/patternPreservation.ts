@@ -7,7 +7,8 @@ import {Transformation} from '../../custom-transformations/definition';
  */
 export function patternPreservation(): () => Transformation {
   // Preservation pattern
-  const PRESERVE_PATTERN = /\s*\/\/\s*preserve-line/g;
+  const PRESERVE_PATTERN = /\s*\/\/\s*preserve-line/;
+  const COMMENT_PATTERN = /^\W*\/\/\s/;
   return () => ({
     code: {
       beforeTranspile(code) {
@@ -28,7 +29,9 @@ export function patternPreservation(): () => Transformation {
           .split('\n')
           .map(line => {
             if (PRESERVE_PATTERN.test(line)) {
-              return line.replace(/^\/\/\s/, '').replace(PRESERVE_PATTERN, '');
+              return line
+                .replace(COMMENT_PATTERN, '')
+                .replace(PRESERVE_PATTERN, '');
             }
             return line;
           })
