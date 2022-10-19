@@ -39,7 +39,8 @@ export function highlightPreservation(): () => Transformation {
             }
             return '/* highlight-line */' + line;
           })
-          .join('\n');
+          .join('\n')
+          .replace(/\/\/\s?highlight-start\s*\/\/\s?highlight-end/m, '');
       }
     },
     node(originalCodeNode, transpiledCodeNode) {

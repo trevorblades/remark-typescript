@@ -139,4 +139,178 @@ describe('Issue with long highlighted lines', () => {
 
     `);
   });
+  test('collapses code-less highlight blocks', () => {
+    const ts = outdent`
+      \`\`\`ts title="Apollo Server 4"
+      import { RESTDataSource, WillSendRequestOptions } from '@apollo/datasource-rest';
+      // KeyValueCache is the type of Apollo server's default cache
+      import type { KeyValueCache } from '@apollo/utils.keyvaluecache';
+      import { ApolloServer } from '@apollo/server';
+      import { startStandaloneServer } from '@apollo/server/standalone';
+      
+      class MoviesAPI extends RESTDataSource { // highlight-line
+        override baseURL = 'https://movies-api.example.com/';
+        private token: string;
+      
+        constructor(options: { token: string; cache: KeyValueCache }) {
+          super(options); // this sends our server's \`cache\` through
+          this.token = options.token;
+        }
+      
+        override willSendRequest(request: WillSendRequestOptions) {
+          request.headers['authorization'] = this.token;
+        }
+      
+        async getMovie(id: string): Promise<Movie> {
+          return this.get<Movie>(\`movies/\${encodeURIComponent(id)}\`);
+        }
+      }
+      
+      // highlight-start
+      interface ContextValue {
+        token: string;
+        dataSources: {
+          moviesAPI: MoviesAPI;
+        };
+      }
+      // highlight-end
+      
+      const server = new ApolloServer<ContextValue>({
+        typeDefs,
+        resolvers,
+      });
+      
+      const { url } = await startStandaloneServer(server, {
+        context: async ({ req }) => {
+          const token = getTokenFromRequest(req);
+          const { cache } = server;
+          return {
+            token,
+            //highlight-start
+            dataSources: {
+              moviesAPI: new MoviesAPI({ cache, token }),
+            },
+            //highlight-end
+          };
+        },
+      });
+      
+      console.log(\`🚀  Server ready at \${url}\`);
+      \`\`\`
+    `;
+
+    const result = remark()
+      .use(remarkTypescript, {
+        customTransformations: [highlightPreservation()]
+      })
+      .processSync(ts)
+      .toString();
+
+    expect(result).toBe(outdent`
+      \`\`\`ts title="Apollo Server 4"
+      import { RESTDataSource, WillSendRequestOptions } from "@apollo/datasource-rest";
+      // KeyValueCache is the type of Apollo server's default cache
+      import type { KeyValueCache } from "@apollo/utils.keyvaluecache";
+      import { ApolloServer } from "@apollo/server";
+      import { startStandaloneServer } from "@apollo/server/standalone";
+      
+      /* highlight-line */ class MoviesAPI extends RESTDataSource {
+        override baseURL = "https://movies-api.example.com/";
+        private token: string;
+      
+        constructor(options: { token: string; cache: KeyValueCache }) {
+          super(options); // this sends our server's \`cache\` through
+          this.token = options.token;
+        }
+      
+        override willSendRequest(request: WillSendRequestOptions) {
+          request.headers["authorization"] = this.token;
+        }
+      
+        async getMovie(id: string): Promise<Movie> {
+          return this.get<Movie>(\`movies/\${encodeURIComponent(id)}\`);
+        }
+      }
+      
+      // highlight-start
+      interface ContextValue {
+        token: string;
+        dataSources: {
+          moviesAPI: MoviesAPI;
+        };
+      }
+      // highlight-end
+      
+      const server = new ApolloServer<ContextValue>({
+        typeDefs,
+        resolvers,
+      });
+      
+      const { url } = await startStandaloneServer(server, {
+        context: async ({ req }) => {
+          const token = getTokenFromRequest(req);
+          const { cache } = server;
+          return {
+            token,
+            //highlight-start
+            dataSources: {
+              moviesAPI: new MoviesAPI({ cache, token }),
+            },
+            //highlight-end
+          };
+        },
+      });
+      
+      console.log(\`🚀  Server ready at \${url}\`);
+      \`\`\`
+
+      \`\`\`js title="Apollo Server 4"
+      import { RESTDataSource } from "@apollo/datasource-rest";
+      // KeyValueCache is the type of Apollo server's default cache
+      
+      import { ApolloServer } from "@apollo/server";
+      import { startStandaloneServer } from "@apollo/server/standalone";
+      
+      /* highlight-line */ class MoviesAPI extends RESTDataSource {
+        baseURL = "https://movies-api.example.com/";
+      
+        constructor(options) {
+          super(options); // this sends our server's \`cache\` through
+          this.token = options.token;
+        }
+      
+        willSendRequest(request) {
+          request.headers["authorization"] = this.token;
+        }
+      
+        async getMovie(id) {
+          return this.get(\`movies/\${encodeURIComponent(id)}\`);
+        }
+      }
+      
+      const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+      });
+      
+      const { url } = await startStandaloneServer(server, {
+        context: async ({ req }) => {
+          const token = getTokenFromRequest(req);
+          const { cache } = server;
+          return {
+            token,
+            //highlight-start
+            dataSources: {
+              moviesAPI: new MoviesAPI({ cache, token }),
+            },
+            //highlight-end
+          };
+        },
+      });
+      
+      console.log(\`🚀  Server ready at \${url}\`);
+      \`\`\`
+
+    `);
+  });
 });
