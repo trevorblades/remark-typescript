@@ -54,10 +54,8 @@ export function remarkTypescript({
   );
 
   // Create the transformation applicator based on the custom transformations
-  const {
-    applyAtLocation,
-    applyNodeTransformations
-  } = createTransformationApplicator(customTransformations);
+  const {applyAtLocation, applyNodeTransformations} =
+    createTransformationApplicator(customTransformations);
 
   return function transformer(tree): void {
     const visitor: Visitor<Code> = (node, index, parent) => {
@@ -96,8 +94,9 @@ export function remarkTypescript({
             const formattedCode = format(
               applyAtLocation('beforeFormat', code, meta),
               {
+                printWidth: Number.POSITIVE_INFINITY,
                 ...prettierOptions,
-                parser: 'babel'
+                parser: 'typescript'
               }
             ).trim();
             transpiledCodeNode = {
@@ -112,11 +111,15 @@ export function remarkTypescript({
 
           // Update the original code block with the formatting instructions
           // Useful for cleaning up any extraneous comments like // preserve-line
-          node.value = applyAtLocation(
-            ['beforeFormat', 'afterFormat'],
-            node.value,
-            meta
-          );
+          const formattedCode = format(
+            applyAtLocation('beforeFormat', node.value, meta),
+            {
+              printWidth: Number.POSITIVE_INFINITY,
+              ...prettierOptions,
+              parser: 'typescript'
+            }
+          ).trim();
+          node.value = applyAtLocation('afterFormat', formattedCode, meta);
 
           applyNodeTransformations(node, transpiledCodeNode);
 
@@ -133,7 +136,7 @@ export function remarkTypescript({
             throw error;
           } else if (error instanceof Error) {
             // eslint-disable-next-line no-console
-            console.error(error.message);
+            console.error(error);
           }
         }
       }

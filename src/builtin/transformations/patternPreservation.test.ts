@@ -21,8 +21,8 @@ describe('Pattern Preservation', () => {
     expect(result).toEqual(
       outdent`
         \`\`\`ts
-        import { ApolloServer } from '@apollo/server';
-        import { startStandaloneServer } from '@apollo/server/standalone';
+        import { ApolloServer } from "@apollo/server";
+        import { startStandaloneServer } from "@apollo/server/standalone";
         \`\`\`
 
         \`\`\`js

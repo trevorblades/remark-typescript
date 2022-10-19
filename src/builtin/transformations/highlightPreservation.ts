@@ -14,6 +14,20 @@ function getHighlightedLinesFromNode(meta?: string) {
 export function highlightPreservation(): () => Transformation {
   return () => ({
     code: {
+      beforeFormat(code) {
+        return code
+          .split('\n')
+          .map(line => {
+            if (/\s?\/\/\s?highlight-line/.test(line)) {
+              return (
+                '/* highlight-line */' +
+                line.replace(/\s?\/\/\s?highlight-line/, '')
+              );
+            }
+            return line;
+          })
+          .join('\n');
+      },
       afterTranspile(code, meta) {
         const highlightedLines = getHighlightedLinesFromNode(meta);
         return code
@@ -23,7 +37,7 @@ export function highlightPreservation(): () => Transformation {
             if (!isHighlighted) {
               return line;
             }
-            return line + ' // highlight-line';
+            return '/* highlight-line */' + line;
           })
           .join('\n');
       }
@@ -37,7 +51,13 @@ export function highlightPreservation(): () => Transformation {
         .split('\n')
         .map((line, i) => {
           if (highlightedLines.includes(i + 1)) {
-            return line + ' // highlight-line';
+            return '/* highlight-line */' + line;
+          }
+          if (/\s?\/\/\s?highlight-line/.test(line)) {
+            return (
+              '/* highlight-line */' +
+              line.replace(/\s?\/\/\s?highlight-line/, '')
+            );
           }
           return line;
         })
@@ -47,7 +67,7 @@ export function highlightPreservation(): () => Transformation {
       if (transpiledCodeNode) {
         transpiledCodeNode.value = transpiledCodeNode.value
           .split('\n')
-          .filter(line => !line.match(/^\s*\/\/ highlight-line$/))
+          .filter(line => !line.match(new RegExp('^/\\* highlight-line \\*/$')))
           .join('\n');
       }
 

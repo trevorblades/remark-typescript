@@ -16,28 +16,28 @@ interface JSXNode {
 /**
  * Determines if a code blocked is wrapped in a particular react component. Useful for MDX
  */
-export const isWrapped: (options: Options) => FilterTest = ({
-  wrapperComponent
-}: Options) => (_, parent, index) => {
-  const prevNode = parent.children[index - 1];
-  const nextNode = parent.children[index + 1];
+export const isWrapped: (options: Options) => FilterTest =
+  ({wrapperComponent}: Options) =>
+  (_, parent, index) => {
+    const prevNode = parent.children[index - 1];
+    const nextNode = parent.children[index + 1];
 
-  if (!prevNode || !nextNode) {
-    return false;
-  }
-
-  for (const node of [prevNode, nextNode]) {
-    if (node.type !== 'jsx') {
+    if (!prevNode || !nextNode) {
       return false;
     }
-  }
 
-  if (
-    (prevNode as JSXNode).value !== `<${wrapperComponent}>` ||
-    (nextNode as JSXNode).value !== `</${wrapperComponent}>`
-  ) {
-    return false;
-  }
+    for (const node of [prevNode, nextNode]) {
+      if (node.type !== 'jsx') {
+        return false;
+      }
+    }
 
-  return true;
-};
+    if (
+      (prevNode as JSXNode).value !== `<${wrapperComponent}>` ||
+      (nextNode as JSXNode).value !== `</${wrapperComponent}>`
+    ) {
+      return false;
+    }
+
+    return true;
+  };

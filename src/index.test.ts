@@ -7,15 +7,10 @@ import {remarkTypescript} from './remarkTypescript';
 test('transforms TS code blocks', (): void => {
   const ts = outdent`
     \`\`\`ts
-    (): void => { }
+    (): void => {};
     \`\`\`
   `;
-  expect(
-    remark()
-      .use(remarkTypescript)
-      .processSync(ts)
-      .toString()
-  ).toEqual(
+  expect(remark().use(remarkTypescript).processSync(ts).toString()).toEqual(
     outdent`
       ${ts}
 
@@ -30,15 +25,10 @@ test('transforms TS code blocks', (): void => {
 test('preserves code block titles', (): void => {
   const ts = outdent`
     \`\`\`tsx:title=src/index.tsx
-    (): void => { }
+    (): void => {};
     \`\`\`
   `;
-  expect(
-    remark()
-      .use(remarkTypescript)
-      .processSync(ts)
-      .toString()
-  ).toEqual(
+  expect(remark().use(remarkTypescript).processSync(ts).toString()).toEqual(
     outdent`
       ${ts}
 
@@ -53,15 +43,10 @@ test('preserves code block titles', (): void => {
 test('preserves metastring', (): void => {
   const ts = outdent`
     \`\`\`tsx title="src/index.tsx"
-    (): void => { }
+    (): void => {};
     \`\`\`
   `;
-  expect(
-    remark()
-      .use(remarkTypescript)
-      .processSync(ts)
-      .toString()
-  ).toEqual(
+  expect(remark().use(remarkTypescript).processSync(ts).toString()).toEqual(
     outdent`
       ${ts}
 
@@ -128,7 +113,7 @@ test('uses the skipping parameter', (): void => {
     \`\`\`
 
     \`\`\`ts
-    (): void => { }
+    (): void => {};
     \`\`\`
   `;
   const result = remark()

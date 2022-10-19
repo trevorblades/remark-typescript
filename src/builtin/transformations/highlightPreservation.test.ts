@@ -21,13 +21,13 @@ describe('Highlight Transformation', () => {
     expect(result).toEqual(
       outdent`
         \`\`\`ts
-        () => {}; // highlight-line
-        () => {}; // highlight-line
+        /* highlight-line */() => {};
+        /* highlight-line */() => {};
         \`\`\`
   
         \`\`\`js
-        () => {}; // highlight-line
-        () => {}; // highlight-line
+        /* highlight-line */ () => {};
+        /* highlight-line */ () => {};
         \`\`\`
 
       `
@@ -51,11 +51,11 @@ describe('Highlight Transformation', () => {
       outdent`
         \`\`\`ts
         type Result = void;
-        (): Result => {}; // highlight-line
+        /* highlight-line */(): Result => {};
         \`\`\`
   
         \`\`\`js
-        () => {}; // highlight-line
+        /* highlight-line */ () => {};
         \`\`\`
 
       `
@@ -78,12 +78,12 @@ describe('Highlight Transformation', () => {
     expect(result).toEqual(
       outdent`
         \`\`\`ts
-        type Result = void; // highlight-line
-        (): Result => {}; // highlight-line
+        /* highlight-line */type Result = void;
+        /* highlight-line */(): Result => {};
         \`\`\`
 
         \`\`\`js
-        () => {}; // highlight-line
+        /* highlight-line */ () => {};
         \`\`\`
 
       `
@@ -113,9 +113,9 @@ describe('Highlight Transformation', () => {
         \`\`\`ts
         const foo = "bar";
 
-        interface Foo { // highlight-line
-          foo: string; // highlight-line
-        } // highlight-line
+        /* highlight-line */interface Foo {
+        /* highlight-line */  foo: string;
+        /* highlight-line */}
   
         (): void => {};
         \`\`\`
